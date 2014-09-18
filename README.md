@@ -17,11 +17,11 @@ This requires the latest Xcode that supports the Swift language. At the moment i
 
 ##Setup/Usage Instructions
 
-* Type in the Cunsumer Key and Consumer Secret in the dialog
-* Generate Token  
+* Type in the Consumer Key and Consumer Secret in the dialog that you got for your application on [https://developer.autodesk.com](https://developer.autodesk.com) 
+* Generate Token - this is required before doing any further operation  
 * Upload a file for translation
 * When a urn (id of a given uploaded file) is selected in the combo box, then the dialog will try to retrieve and display  its thumbnail
-* When a urn is selected in the combo box and a token is already generated, then you can also open the model in the browser
+* When a urn is selected in the combo box then you can also open the model in the browser
 * The project also stores all the urn’s and keys, so that you do not have to type them in the next time you start the program. If you want to delete them then just delete them in the UI and then close the program
 
 ## License
