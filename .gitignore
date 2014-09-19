@@ -1,3 +1,7 @@
 *.xccheckout
 *.xcuserstate
 MacViewStarter.xcodeproj/project.xcworkspace/xcuserdata/adamnagy.xcuserdatad/UserInterfaceState.xcuserstate
+
+*.xcbkptlist
+
+MacViewStarter.xcodeproj/xcuserdata/adamnagy.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist

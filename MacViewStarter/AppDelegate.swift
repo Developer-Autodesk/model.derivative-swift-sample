@@ -49,9 +49,16 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     var filePath = openFileDialog(
       "File Upload", message: "Select file to upload")
     
+    if filePath == "" {
+      return
+    }
+    
     var fileData = NSData(contentsOfURL: NSURL(string: filePath))
     
     var fileName = filePath.lastPathComponent
+    
+    // Get rid of spaces in the file name
+    fileName = fileName.stringByReplacingOccurrencesOfString("%20", withString: "", options: NSStringCompareOptions.CaseInsensitiveSearch, range: nil)
     
     // Now we can try to create a bucket
     var body = NSString(format:
@@ -68,9 +75,7 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     
     // Now we try to upload the file
     var url = NSString(format:"%@/%@",
-      viewerUrl + "/oss/v1/buckets/mytestbucket/objects",
-      fileName.stringByAddingPercentEscapesUsingEncoding(
-        NSUTF8StringEncoding)!);
+      viewerUrl + "/oss/v1/buckets/mytestbucket/objects", fileName);
     
     json =
       httpTo(url, data: fileData,
