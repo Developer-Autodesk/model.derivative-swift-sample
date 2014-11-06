@@ -11,7 +11,8 @@ import Cocoa
 class AppDelegate:
 NSObject, NSApplicationDelegate, NSComboBoxDelegate {
   
-  let viewerUrl = "https://developer.api.autodesk.com"
+  let viewerUrl = "https://developer-stg.api.autodesk.com"
+  let bucketKey = "mybucketkey"
   
   @IBOutlet weak var window: NSWindow!
   
@@ -29,7 +30,8 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
   @IBAction func openWebpage(sender: AnyObject) {
     // Get the file path
     var mainBundle = NSBundle.mainBundle()
-    var path = mainBundle.pathForResource("index", ofType:"html")
+    //var path = mainBundle.pathForResource("index", ofType:"html")
+    var path = mainBundle.pathForResource("ViewSaveAnimate", ofType:"html")
     var url = NSURL.fileURLWithPath(path!)
     path = url?.absoluteString
     
@@ -62,12 +64,11 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     
     // Now we can try to create a bucket
     var body = NSString(format:
-      "{ \"bucketKey\":\"mytestbucket\",\"policy\":\"transient\"," +
+      "{ \"bucketKey\":\"" + bucketKey +
+      "\",\"policy\":\"transient\"," +
       "\"servicesAllowed\":{}}")
     
-    var json =
-    
-    httpTo(viewerUrl + "/oss/v1/buckets",
+    var json = httpTo(viewerUrl + "/oss/v1/buckets",
       data: body.dataUsingEncoding(NSUTF8StringEncoding)!,
       contentType: "application/json",
       method: "POST",
@@ -75,12 +76,11 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     
     // Now we try to upload the file
     var url = NSString(format:"%@/%@",
-      viewerUrl + "/oss/v1/buckets/mytestbucket/objects", fileName);
+      viewerUrl + "/oss/v1/buckets/" + bucketKey + "/objects", fileName);
     
-    json =
-      httpTo(url, data: fileData,
-        contentType: "application/stream",
-        method: "PUT", statusCode: nil)
+    json = httpTo(url, data: fileData,
+      contentType: "application/stream",
+      method: "PUT", statusCode: nil)
     
     var objects: AnyObject =
     json!.objectForKey("objects")!.objectAtIndex(0)
@@ -104,12 +104,11 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     
     var statusCode: NSInteger? = nil
     
-    json =
-      httpTo(viewerUrl + "/viewingservice/v1/register",
-        data: body.dataUsingEncoding(NSUTF8StringEncoding)!,
-        contentType:"application/json; charset=utf-8",
-        method:"POST",
-        statusCode: statusCode)
+    json = httpTo(viewerUrl + "/viewingservice/v1/register",
+      data: body.dataUsingEncoding(NSUTF8StringEncoding)!,
+      contentType:"application/json; charset=utf-8",
+      method:"POST",
+      statusCode: statusCode)
   }
   
   func comboBoxSelectionDidChange(notification: NSNotification!) {

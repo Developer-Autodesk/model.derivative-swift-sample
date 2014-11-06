@@ -13,6 +13,7 @@
 		F718566519C9EFA60017BED6 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F718566319C9EFA60017BED6 /* MainMenu.xib */; };
 		F718567119C9EFA60017BED6 /* MacViewStarterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F718567019C9EFA60017BED6 /* MacViewStarterTests.swift */; };
 		F7CB810C19CA62CB0055A01E /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = F7CB810B19CA62CB0055A01E /* index.html */; };
+		F7DAF58619CE09A30000DD29 /* ViewSaveAnimate.html in Resources */ = {isa = PBXBuildFile; fileRef = F7DAF58519CE09A30000DD29 /* ViewSaveAnimate.html */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		F718566F19C9EFA60017BED6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F718567019C9EFA60017BED6 /* MacViewStarterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacViewStarterTests.swift; sourceTree = "<group>"; };
 		F7CB810B19CA62CB0055A01E /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		F7DAF58519CE09A30000DD29 /* ViewSaveAnimate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = ViewSaveAnimate.html; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 		F718565A19C9EFA60017BED6 /* MacViewStarter */ = {
 			isa = PBXGroup;
 			children = (
+				F7DAF58519CE09A30000DD29 /* ViewSaveAnimate.html */,
 				F7CB810B19CA62CB0055A01E /* index.html */,
 				F718565F19C9EFA60017BED6 /* AppDelegate.swift */,
 				F718566119C9EFA60017BED6 /* Images.xcassets */,
@@ -192,6 +195,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F7DAF58619CE09A30000DD29 /* ViewSaveAnimate.html in Resources */,
 				F7CB810C19CA62CB0055A01E /* index.html in Resources */,
 				F718566219C9EFA60017BED6 /* Images.xcassets in Resources */,
 				F718566519C9EFA60017BED6 /* MainMenu.xib in Resources */,
