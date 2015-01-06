@@ -4,12 +4,11 @@
 
 *This sample is part of the [Developer-Autodesk/Autodesk-View-and-Data-API-Samples](https://github.com/Developer-Autodesk/autodesk-view-and-data-api-samples) repository.*
 
-A MacOS sample written in [Swift](https://developer.apple.com/swift/) that illustrates what is doable with Autodesk View And Data API 
+A MacOS sample written in [Swift](https://developer.apple.com/swift/) that illustrates the partial workflow with Autodesk View And Data API 
 
 * Upload a file to bucket
 * Start translation
 * Get thumbnail
-* Load it in Viewer
 
 ##Dependencies
 
@@ -21,8 +20,8 @@ This requires the latest Xcode that supports the Swift language. At the moment i
 * Generate Token - this is required before doing any further operation  
 * Upload a file for translation
 * When a urn (id of a given uploaded file) is selected in the combo box, then the dialog will try to retrieve and display  its thumbnail
-* When a urn is selected in the combo box then you can also open the model in the browser
-* The project also stores all the urn’s and keys, so that you do not have to type them in the next time you start the program. If you want to delete them then just delete them in the UI and then close the program
+* Next, use other web applications samples like [the Basic Node.Js sample](https://github.com/Developer-Autodesk/workflow-node.js-view.and.data.api) to view the models. 
+
 
 ## License
 

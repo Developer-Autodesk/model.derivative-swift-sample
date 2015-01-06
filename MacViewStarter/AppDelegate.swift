@@ -28,22 +28,26 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
   
   // Open the webpage of the project: index.html
   @IBAction func openWebpage(sender: AnyObject) {
-    // Get the file path
-    var mainBundle = NSBundle.mainBundle()
-    var path = mainBundle.pathForResource("index", ofType:"html")
-    //var path = mainBundle.pathForResource("ViewSaveAnimate", ofType:"html")
-    var url = NSURL.fileURLWithPath(path!)
-    path = url?.absoluteString
+    //This part does not work anymore, as the viewer need to be running
+    //from a web server, i.e, the address should be simliar like
+    // http://server/folder/index.html, instead of file:///folder/index.html
     
-    // Add the query string
-    path! += "?accessToken=" + accessToken.stringValue
-    path! += "&urn=" + fileUrn.stringValue
-    
-    // Create URL for that
-    url = NSURL(string: path!)!
-    
-    // Open it in browser
-    NSWorkspace.sharedWorkspace().openURL(url!)
+//    // Get the file path
+//    var mainBundle = NSBundle.mainBundle()
+//    var path = mainBundle.pathForResource("index", ofType:"html")
+//    //var path = mainBundle.pathForResource("ViewSaveAnimate", ofType:"html")
+//    var url = NSURL.fileURLWithPath(path!)
+//    path = url?.absoluteString
+//    
+//    // Add the query string
+//    path! += "?accessToken=" + accessToken.stringValue
+//    path! += "&urn=" + fileUrn.stringValue
+//    
+//    // Create URL for that
+//    url = NSURL(string: path!)!
+//    
+//    // Open it in browser
+//    NSWorkspace.sharedWorkspace().openURL(url!)
   }
   
   @IBAction func uploadFile(sender: AnyObject) {
