@@ -11,8 +11,8 @@ import Cocoa
 class AppDelegate:
 NSObject, NSApplicationDelegate, NSComboBoxDelegate {
   
-  let viewerUrl = "https://developer-stg.api.autodesk.com"
-  let bucketKey = "mybucketkey"
+  let viewerUrl = "https://developer.api.autodesk.com"
+  let bucketKey = "mybucketkey_1"
   
   @IBOutlet weak var window: NSWindow!
   
@@ -30,8 +30,8 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
   @IBAction func openWebpage(sender: AnyObject) {
     // Get the file path
     var mainBundle = NSBundle.mainBundle()
-    //var path = mainBundle.pathForResource("index", ofType:"html")
-    var path = mainBundle.pathForResource("ViewSaveAnimate", ofType:"html")
+    var path = mainBundle.pathForResource("index", ofType:"html")
+    //var path = mainBundle.pathForResource("ViewSaveAnimate", ofType:"html")
     var url = NSURL.fileURLWithPath(path!)
     path = url?.absoluteString
     
@@ -40,10 +40,10 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     path! += "&urn=" + fileUrn.stringValue
     
     // Create URL for that
-    url = NSURL(string: path!)
+    url = NSURL(string: path!)!
     
     // Open it in browser
-    NSWorkspace.sharedWorkspace().openURL(url)
+    NSWorkspace.sharedWorkspace().openURL(url!)
   }
   
   @IBAction func uploadFile(sender: AnyObject) {
@@ -55,7 +55,7 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
       return
     }
     
-    var fileData = NSData(contentsOfURL: NSURL(string: filePath))
+    var fileData = NSData(contentsOfURL: NSURL(string: filePath)!)
     
     var fileName = filePath.lastPathComponent
     
@@ -71,6 +71,7 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     var json = httpTo(viewerUrl + "/oss/v1/buckets",
       data: body.dataUsingEncoding(NSUTF8StringEncoding)!,
       contentType: "application/json",
+        accessToken : accessToken.stringValue,
       method: "POST",
       statusCode: nil)
     
@@ -78,8 +79,9 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     var url = NSString(format:"%@/%@",
       viewerUrl + "/oss/v1/buckets/" + bucketKey + "/objects", fileName);
     
-    json = httpTo(url, data: fileData,
+    json = httpTo(url, data: fileData!,
       contentType: "application/stream",
+         accessToken : accessToken.stringValue,
       method: "PUT", statusCode: nil)
     
     var objects: AnyObject =
@@ -107,6 +109,7 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     json = httpTo(viewerUrl + "/viewingservice/v1/register",
       data: body.dataUsingEncoding(NSUTF8StringEncoding)!,
       contentType:"application/json; charset=utf-8",
+         accessToken : accessToken.stringValue,
       method:"POST",
       statusCode: statusCode)
   }
@@ -124,9 +127,9 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     var url =
     NSString(format:"%@%@",
       viewerUrl + "/viewingservice/v1/thumbnails/", urn)
-    var data = NSData(contentsOfURL: NSURL(string: url))
+    var data = NSData(contentsOfURL: NSURL(string: url)!)
     
-    fileThumbnail.image = NSImage(data: data)
+    fileThumbnail.image = NSImage(data: data!)
   }
   
   func openFileDialog(title: String, message: String) -> String {
@@ -142,8 +145,8 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     myFileDialog.runModal()
     var chosenfile = myFileDialog.URL
     if (chosenfile != nil) {
-      var theFile = chosenfile.absoluteString!
-      return (theFile)
+      var theFile = chosenfile?.absoluteString!
+      return (theFile)!
     } else {
       return ("")
     }
@@ -209,12 +212,15 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
   
   // Send an http request
   func httpTo(url: NSString, data: NSData, contentType: NSString,
+    accessToken: NSString,
     method: NSString, var statusCode: NSInteger?) -> NSDictionary? {
       var req = NSMutableURLRequest(
-        URL: NSURL(string: url))
+        URL: NSURL(string: url)!)
       
       req.HTTPMethod = method
       req.setValue(contentType, forHTTPHeaderField: "Content-Type")
+        if(accessToken.length > 0){
+            req.setValue("Bearer " + accessToken, forHTTPHeaderField: "Authentication")}
       req.HTTPBody = data
       
       var response:
@@ -244,12 +250,14 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
   func logIn() {
     var body = NSString(
       format: "client_id=%@&client_secret=%@&grant_type=client_credentials",
-      consumerKey.stringValue!, consumerSecret.stringValue!).stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+      consumerKey.stringValue, consumerSecret.stringValue).stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
     
     var json = httpTo(
       viewerUrl + "/authentication/v1/authenticate",
       data: body!.dataUsingEncoding(NSUTF8StringEncoding)!,
-      contentType: "application/x-www-form-urlencoded", method: "POST",
+      contentType: "application/x-www-form-urlencoded",
+        accessToken : "",
+        method: "POST",
       statusCode: nil)
     
     accessToken.stringValue = json!.objectForKey("access_token") as NSString
@@ -269,6 +277,7 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     httpTo(viewerUrl + "/utility/v1/settoken",
       data: body!.dataUsingEncoding(NSUTF8StringEncoding)!,
       contentType: "application/x-www-form-urlencoded",
+        accessToken : "",
       method: "POST",
       statusCode: statusCode)
   }

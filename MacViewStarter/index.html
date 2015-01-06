@@ -23,7 +23,7 @@
         var viewer = new Autodesk.Viewing.Viewer3D(viewerElement, {});
 
         Autodesk.Viewing.Initializer(options,function() {
-          viewer.initialize();
+          viewer.start();
           loadDocument(viewer, options.document);
         });
       }
