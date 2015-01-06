@@ -13,7 +13,7 @@ A MacOS sample written in [Swift](https://developer.apple.com/swift/) that illus
 
 ##Dependencies
 
-This requires the latest Xcode that supports the Swift language. At the moment it’s Xcode6-Beta7
+This requires the latest Xcode that supports the Swift language. At the moment it’s Xcode6.1.1
 
 ##Setup/Usage Instructions
 
