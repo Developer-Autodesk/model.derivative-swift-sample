@@ -16,6 +16,7 @@ This requires the latest Xcode that supports the Swift language. At the moment i
 
 ##Setup/Usage Instructions
 
+* Before running the app, change the "bucketKey" variable to something unique - it won't function if your bucket name collides with someone else's
 * Type in the Consumer Key and Consumer Secret in the dialog that you got for your application on [https://developer.autodesk.com](https://developer.autodesk.com) 
 * Generate Token - this is required before doing any further operation  
 * Upload a file for translation
