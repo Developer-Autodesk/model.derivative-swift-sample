@@ -80,6 +80,7 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
       statusCode: nil)
     
     // Now we try to upload the file
+    // uploading will take some time, during which app will freeze
     var url = NSString(format:"%@/%@",
       viewerUrl + "/oss/v1/buckets/" + bucketName.stringValue + "/objects", fileName);
     
@@ -127,6 +128,7 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
   }
   
   // Show thumbnail of currently selected file
+    // thumbnail will only show once translation is completed, which will take some time
   func showThumbnail(urn: NSString) {
     var url =
     NSString(format:"%@%@",
