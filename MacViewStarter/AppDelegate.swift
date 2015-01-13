@@ -12,12 +12,12 @@ class AppDelegate:
 NSObject, NSApplicationDelegate, NSComboBoxDelegate {
   
   let viewerUrl = "https://developer.api.autodesk.com"
-  let bucketKey = "mybucketkey_1"
   
   @IBOutlet weak var window: NSWindow!
   
   @IBOutlet weak var consumerKey: NSTextField!
   @IBOutlet weak var consumerSecret: NSTextField!
+  @IBOutlet weak var bucketName: NSTextField!
   @IBOutlet weak var accessToken: NSTextField!
   @IBOutlet weak var fileUrn: NSComboBox!
   @IBOutlet weak var fileThumbnail: NSImageView!
@@ -68,25 +68,27 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     
     // Now we can try to create a bucket
     var body = NSString(format:
-      "{ \"bucketKey\":\"" + bucketKey +
+      "{ \"bucketKey\":\"" + bucketName.stringValue  +
       "\",\"policy\":\"transient\"," +
       "\"servicesAllowed\":{}}")
     
     var json = httpTo(viewerUrl + "/oss/v1/buckets",
       data: body.dataUsingEncoding(NSUTF8StringEncoding)!,
       contentType: "application/json",
-        accessToken : accessToken.stringValue,
+      accessToken : accessToken.stringValue,
       method: "POST",
       statusCode: nil)
     
     // Now we try to upload the file
     var url = NSString(format:"%@/%@",
-      viewerUrl + "/oss/v1/buckets/" + bucketKey + "/objects", fileName);
+      viewerUrl + "/oss/v1/buckets/" + bucketName.stringValue + "/objects", fileName);
+    
+    var statusCode: NSInteger? = nil
     
     json = httpTo(url, data: fileData!,
       contentType: "application/stream",
          accessToken : accessToken.stringValue,
-      method: "PUT", statusCode: nil)
+      method: "PUT", statusCode: statusCode)
     
     var objects: AnyObject =
     json!.objectForKey("objects")!.objectAtIndex(0)
@@ -107,8 +109,6 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     
     // Send for translation
     body = NSString(format: "{\"urn\":\"%@\"}", fileUrn64)
-    
-    var statusCode: NSInteger? = nil
     
     json = httpTo(viewerUrl + "/viewingservice/v1/register",
       data: body.dataUsingEncoding(NSUTF8StringEncoding)!,
@@ -167,6 +167,7 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     NSUserDefaults.objectForKey(prefs)("ConsumerSecret")
     var fUrn: AnyObject? = NSUserDefaults.objectForKey(prefs)("urn")
     var fUrns: AnyObject? = NSUserDefaults.objectForKey(prefs)("urns")
+    var cBucket: AnyObject? = NSUserDefaults.objectForKey(prefs)("BucketName")
     if (cKey != nil) {
       consumerKey.stringValue = cKey! as NSString
     }
@@ -178,6 +179,9 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     }
     if (fUrns != nil) {
       deserializeUrns(fUrns! as NSString)
+    }
+    if (cBucket != nil) {
+      bucketName.stringValue = cBucket! as NSString
     }
   }
   
@@ -211,6 +215,7 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
       consumerSecret.stringValue, forKey:"ConsumerSecret")
     prefs.setObject(fileUrn.stringValue, forKey:"urn")
     prefs.setObject(serializeUrns(), forKey:"urns")
+    prefs.setObject(bucketName.stringValue, forKey:"BucketName")
     prefs.synchronize()
   }
   
