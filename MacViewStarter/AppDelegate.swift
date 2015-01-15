@@ -75,7 +75,6 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     var json = httpTo(viewerUrl + "/oss/v1/buckets",
       data: body.dataUsingEncoding(NSUTF8StringEncoding)!,
       contentType: "application/json",
-      accessToken : accessToken.stringValue,
       method: "POST",
       statusCode: nil)
     
@@ -88,7 +87,6 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     
     json = httpTo(url, data: fileData!,
       contentType: "application/stream",
-         accessToken : accessToken.stringValue,
       method: "PUT", statusCode: statusCode)
     
     var objects: AnyObject =
@@ -114,7 +112,6 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     json = httpTo(viewerUrl + "/viewingservice/v1/register",
       data: body.dataUsingEncoding(NSUTF8StringEncoding)!,
       contentType:"application/json; charset=utf-8",
-         accessToken : accessToken.stringValue,
       method:"POST",
       statusCode: statusCode)
   }
@@ -223,15 +220,12 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
   
   // Send an http request
   func httpTo(url: NSString, data: NSData, contentType: NSString,
-    accessToken: NSString,
     method: NSString, var statusCode: NSInteger?) -> NSDictionary? {
       var req = NSMutableURLRequest(
         URL: NSURL(string: url)!)
       
       req.HTTPMethod = method
       req.setValue(contentType, forHTTPHeaderField: "Content-Type")
-        if(accessToken.length > 0){
-            req.setValue("Bearer " + accessToken, forHTTPHeaderField: "Authentication")}
       req.HTTPBody = data
       
       var response:
@@ -267,7 +261,6 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
       viewerUrl + "/authentication/v1/authenticate",
       data: body!.dataUsingEncoding(NSUTF8StringEncoding)!,
       contentType: "application/x-www-form-urlencoded",
-        accessToken : "",
         method: "POST",
       statusCode: nil)
     
@@ -288,7 +281,6 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     httpTo(viewerUrl + "/utility/v1/settoken",
       data: body!.dataUsingEncoding(NSUTF8StringEncoding)!,
       contentType: "application/x-www-form-urlencoded",
-        accessToken : "",
       method: "POST",
       statusCode: statusCode)
   }
