@@ -2,7 +2,6 @@
 
 ##Description
 
-*This sample is part of the [Developer-Autodesk/Autodesk-View-and-Data-API-Samples](https://github.com/Developer-Autodesk/autodesk-view-and-data-api-samples) repository.*
 
 A MacOS sample written in [Swift](https://developer.apple.com/swift/) that illustrates the partial workflow with Autodesk View And Data API 
 
