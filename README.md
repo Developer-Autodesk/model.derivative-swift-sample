@@ -1,4 +1,4 @@
-#Autodesk View And Data API Workflow Sample for MacOS written in Swift
+#Autodesk View and Data API Workflow Sample for MacOS written in Swift
 
 
 ##Description
