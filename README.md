@@ -9,6 +9,8 @@ A MacOS sample written in [Swift](https://developer.apple.com/swift) that illust
 * Start translation
 * Get thumbnail
 
+This is what the initial user interface looks like before entering the required data:
+
 ![Image](img/MacViewStarter.png)
 
 ##Dependencies
