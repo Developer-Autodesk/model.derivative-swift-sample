@@ -9,7 +9,7 @@ A MacOS sample written in [Swift](https://developer.apple.com/swift) that illust
 * Start translation
 * Get thumbnail
 
-[Image](https://github.com/Developer-Autodesk/workflow-macos-swift-view.and.data.api/blob/master/img/MacViewStarter.png)
+![Image](img/MacViewStarter.png)
 
 ##Dependencies
 
