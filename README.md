@@ -27,6 +27,9 @@ This requires a version of Xcode that supports the Swift language. With the rele
 * When a urn (id of a given uploaded file) is selected in the combo box, then the dialog will try to retrieve and display  its thumbnail.
 * Next, use other web applications samples like [the Basic Node.Js sample](https://github.com/Developer-Autodesk/workflow-node.js-view.and.data.api) to view the models..
 
+Here is a more detailed user experience of
+[setting up and running this app](http://thebuildingcoder.typepad.com/blog/2015/02/view-and-data-api-sample-in-swift-and-mac-os-upgrade.html).
+
 
 ## License
 
