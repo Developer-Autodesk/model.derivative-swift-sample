@@ -92,9 +92,9 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     var objects: AnyObject =
     json!.objectForKey("objects")!.objectAtIndex(0)
     
-    var fileKey = objects.objectForKey("key") as NSString
-    var fileSha1 = objects.objectForKey("sha-1")as NSString
-    var fileId = objects.objectForKey("id")as NSString
+    var fileKey = objects.objectForKey("key") as! NSString
+    var fileSha1 = objects.objectForKey("sha-1")as! NSString
+    var fileId = objects.objectForKey("id")as! NSString
     
     NSLog("fileKey = %@", fileKey);
     NSLog("fileSha1 = %@", fileSha1);
@@ -116,10 +116,10 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
       statusCode: statusCode)
   }
   
-  func comboBoxSelectionDidChange(notification: NSNotification!) {
+  func comboBoxSelectionDidChange(notification: NSNotification) {
     var changedRow = fileUrn.indexOfSelectedItem;
     var value: AnyObject! = fileUrn.objectValueOfSelectedItem
-    var str = value as NSString
+    var str = value as! NSString
     
     showThumbnail(str)
   }
@@ -130,9 +130,11 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     var url =
     NSString(format:"%@%@",
       viewerUrl + "/viewingservice/v1/thumbnails/", urn)
-    var data = NSData(contentsOfURL: NSURL(string: url)!)
+    var data = NSData(contentsOfURL: NSURL(string: url as String)!)
     
-    fileThumbnail.image = NSImage(data: data!)
+    if (data != nil) {
+      fileThumbnail.image = NSImage(data: data!)
+    }
   }
   
   func openFileDialog(title: String, message: String) -> String {
@@ -155,7 +157,7 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     }
   }
   
-  func applicationDidFinishLaunching(aNotification: NSNotification?) {
+  func applicationDidFinishLaunching(aNotification: NSNotification) {
     // Insert code here to initialize your application
     
     // Load Consumer Key, Consumer Secret, urn
@@ -168,19 +170,19 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     var fUrns: AnyObject? = NSUserDefaults.objectForKey(prefs)("urns")
     var cBucket: AnyObject? = NSUserDefaults.objectForKey(prefs)("BucketName")
     if (cKey != nil) {
-      consumerKey.stringValue = cKey! as NSString
+      consumerKey.stringValue = cKey! as! String
     }
     if (cSecret != nil) {
-      consumerSecret.stringValue = cSecret! as NSString
+      consumerSecret.stringValue = cSecret! as! String
     }
     if (fUrn != nil) {
-      fileUrn.stringValue = fUrn! as NSString
+      fileUrn.stringValue = fUrn! as! String
     }
     if (fUrns != nil) {
-      deserializeUrns(fUrns! as NSString)
+      deserializeUrns(fUrns! as! String)
     }
     if (cBucket != nil) {
-      bucketName.stringValue = cBucket! as NSString
+      bucketName.stringValue = cBucket! as! String
     }
   }
   
@@ -188,7 +190,7 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     var urns = ""
     var values = fileUrn.objectValues
     for urn in fileUrn.objectValues {
-      urns += urn as NSString + ";"
+      urns += urn as! String + ";"
     }
     
     return urns as NSString
@@ -200,7 +202,7 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     fileUrn.addItemsWithObjectValues(urns)
   }
   
-  func applicationWillTerminate(aNotification: NSNotification?) {
+  func applicationWillTerminate(aNotification: NSNotification) {
     // Insert code here to tear down your application
     
     // Save Consumer Key, Consumer Secret, urn
@@ -222,10 +224,10 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
   func httpTo(url: NSString, data: NSData, contentType: NSString,
     method: NSString, var statusCode: NSInteger?) -> NSDictionary? {
       var req = NSMutableURLRequest(
-        URL: NSURL(string: url)!)
+        URL: NSURL(string: url as String)!)
       
-      req.HTTPMethod = method
-      req.setValue(contentType, forHTTPHeaderField: "Content-Type")
+      req.HTTPMethod = method as String
+      req.setValue(contentType as String, forHTTPHeaderField: "Content-Type")
       req.HTTPBody = data
       
       var response:
@@ -236,14 +238,14 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
       
       if (statusCode != nil && response != nil) {
         var httpResponse = response.memory!
-        statusCode! = (httpResponse as NSHTTPURLResponse).statusCode
+        statusCode! = (httpResponse as! NSHTTPURLResponse).statusCode
       }
       
       if (result != nil && result!.length > 0) {
         var json = NSJSONSerialization.JSONObjectWithData(
           result!,
           options: NSJSONReadingOptions.MutableContainers,
-          error: error) as NSDictionary
+          error: error) as! NSDictionary
         
         return json
       }
@@ -264,7 +266,7 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
         method: "POST",
       statusCode: nil)
     
-    accessToken.stringValue = json!.objectForKey("access_token") as NSString
+    accessToken.stringValue = json!.objectForKey("access_token") as! String
     
     // Set token to authorize additional calls
     setToken()
