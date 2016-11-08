@@ -37,5 +37,6 @@ That samples are licensed under the terms of the [MIT License](http://opensource
 
 ## Written by 
 
-Written by [Adam Nagy](http://adndevblog.typepad.com/cloud_and_mobile/adam-nagy.html), Autodesk Developer Network.
+Adam Nagy (Forge Partner Development)<br />
+http://forge.autodesk.com<br />
 
