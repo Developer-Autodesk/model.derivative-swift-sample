@@ -27,13 +27,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F718565819C9EFA60017BED6 /* MacViewStarter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacViewStarter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F718565819C9EFA60017BED6 /* FileUploader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FileUploader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F718565C19C9EFA60017BED6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F718565D19C9EFA60017BED6 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		F718565F19C9EFA60017BED6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F718566119C9EFA60017BED6 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F718566419C9EFA60017BED6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		F718566A19C9EFA60017BED6 /* MacViewStarterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacViewStarterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F718566A19C9EFA60017BED6 /* FileUploaderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FileUploaderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F718566F19C9EFA60017BED6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F718567019C9EFA60017BED6 /* MacViewStarterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacViewStarterTests.swift; sourceTree = "<group>"; };
 		F7CB810B19CA62CB0055A01E /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
@@ -70,8 +70,8 @@
 		F718565919C9EFA60017BED6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F718565819C9EFA60017BED6 /* MacViewStarter.app */,
-				F718566A19C9EFA60017BED6 /* MacViewStarterTests.xctest */,
+				F718565819C9EFA60017BED6 /* FileUploader.app */,
+				F718566A19C9EFA60017BED6 /* FileUploaderTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -118,9 +118,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F718565719C9EFA60017BED6 /* MacViewStarter */ = {
+		F718565719C9EFA60017BED6 /* FileUploader */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F718567419C9EFA60017BED6 /* Build configuration list for PBXNativeTarget "MacViewStarter" */;
+			buildConfigurationList = F718567419C9EFA60017BED6 /* Build configuration list for PBXNativeTarget "FileUploader" */;
 			buildPhases = (
 				F718565419C9EFA60017BED6 /* Sources */,
 				F718565519C9EFA60017BED6 /* Frameworks */,
@@ -130,14 +130,14 @@
 			);
 			dependencies = (
 			);
-			name = MacViewStarter;
+			name = FileUploader;
 			productName = MacViewStarter;
-			productReference = F718565819C9EFA60017BED6 /* MacViewStarter.app */;
+			productReference = F718565819C9EFA60017BED6 /* FileUploader.app */;
 			productType = "com.apple.product-type.application";
 		};
-		F718566919C9EFA60017BED6 /* MacViewStarterTests */ = {
+		F718566919C9EFA60017BED6 /* FileUploaderTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F718567719C9EFA60017BED6 /* Build configuration list for PBXNativeTarget "MacViewStarterTests" */;
+			buildConfigurationList = F718567719C9EFA60017BED6 /* Build configuration list for PBXNativeTarget "FileUploaderTests" */;
 			buildPhases = (
 				F718566619C9EFA60017BED6 /* Sources */,
 				F718566719C9EFA60017BED6 /* Frameworks */,
@@ -148,9 +148,9 @@
 			dependencies = (
 				F718566C19C9EFA60017BED6 /* PBXTargetDependency */,
 			);
-			name = MacViewStarterTests;
+			name = FileUploaderTests;
 			productName = MacViewStarterTests;
-			productReference = F718566A19C9EFA60017BED6 /* MacViewStarterTests.xctest */;
+			productReference = F718566A19C9EFA60017BED6 /* FileUploaderTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -159,19 +159,23 @@
 		F718565019C9EFA60017BED6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Adam Nagy";
 				TargetAttributes = {
 					F718565719C9EFA60017BED6 = {
 						CreatedOnToolsVersion = 6.0;
+						LastSwiftMigration = 0800;
 					};
 					F718566919C9EFA60017BED6 = {
 						CreatedOnToolsVersion = 6.0;
+						LastSwiftMigration = 0800;
 						TestTargetID = F718565719C9EFA60017BED6;
 					};
 				};
 			};
-			buildConfigurationList = F718565319C9EFA60017BED6 /* Build configuration list for PBXProject "MacViewStarter" */;
+			buildConfigurationList = F718565319C9EFA60017BED6 /* Build configuration list for PBXProject "FileUploader" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -184,8 +188,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F718565719C9EFA60017BED6 /* MacViewStarter */,
-				F718566919C9EFA60017BED6 /* MacViewStarterTests */,
+				F718565719C9EFA60017BED6 /* FileUploader */,
+				F718566919C9EFA60017BED6 /* FileUploaderTests */,
 			);
 		};
 /* End PBXProject section */
@@ -234,7 +238,7 @@
 /* Begin PBXTargetDependency section */
 		F718566C19C9EFA60017BED6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F718565719C9EFA60017BED6 /* MacViewStarter */;
+			target = F718565719C9EFA60017BED6 /* FileUploader */;
 			targetProxy = F718566B19C9EFA60017BED6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -264,15 +268,19 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -306,8 +314,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -316,6 +326,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -325,6 +336,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};
@@ -335,7 +347,9 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = MacViewStarter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.autodesk.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -346,7 +360,9 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = MacViewStarter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.autodesk.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -365,8 +381,10 @@
 				);
 				INFOPLIST_FILE = MacViewStarterTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.autodesk.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MacViewStarter.app/Contents/MacOS/MacViewStarter";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FileUploader.app/Contents/MacOS/FileUploader";
 			};
 			name = Debug;
 		};
@@ -381,15 +399,17 @@
 				);
 				INFOPLIST_FILE = MacViewStarterTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.autodesk.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MacViewStarter.app/Contents/MacOS/MacViewStarter";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FileUploader.app/Contents/MacOS/FileUploader";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F718565319C9EFA60017BED6 /* Build configuration list for PBXProject "MacViewStarter" */ = {
+		F718565319C9EFA60017BED6 /* Build configuration list for PBXProject "FileUploader" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F718567219C9EFA60017BED6 /* Debug */,
@@ -398,7 +418,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F718567419C9EFA60017BED6 /* Build configuration list for PBXNativeTarget "MacViewStarter" */ = {
+		F718567419C9EFA60017BED6 /* Build configuration list for PBXNativeTarget "FileUploader" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F718567519C9EFA60017BED6 /* Debug */,
@@ -407,7 +427,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F718567719C9EFA60017BED6 /* Build configuration list for PBXNativeTarget "MacViewStarterTests" */ = {
+		F718567719C9EFA60017BED6 /* Build configuration list for PBXNativeTarget "FileUploaderTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F718567819C9EFA60017BED6 /* Debug */,

@@ -11,10 +11,128 @@ import Cocoa
 class AppDelegate:
 NSObject, NSApplicationDelegate, NSComboBoxDelegate {
   
-  let viewerUrl = "https://developer.api.autodesk.com"
+  // List of Forge API URL's
   
+  let forgeUrl = "https://developer.api.autodesk.com"
+  
+  func postAuthenticatePath() -> String {
+    return String(
+      format:
+      "%@/authentication/v1/authenticate",
+      forgeUrl);
+  }
+  
+  func postBucketsPath() -> String {
+    return String(
+      format:
+      "%@/oss/v1/buckets",
+      forgeUrl);
+  }
+  
+  func putObjectPath(_ bucketName: String, _ fileName: String) -> String {
+    return String(
+      format:
+      "%@/oss/v1/buckets/%@/objects/%@",
+      forgeUrl,
+      bucketName,
+      fileName);
+  }
+  
+  func postTranslatePath() -> String {
+    return String(
+      format:
+      "%@/modelderivative/v2/designdata/job",
+      forgeUrl);
+  }
+  
+  func getThumbnailPath(_ fileUrn64: String) -> String {
+    return String(
+      format:
+      "%@/modelderivative/v2/designdata/%@/thumbnail",
+      forgeUrl,
+      fileUrn64);
+  }
+  
+  func getManifestPath(_ fileUrn64: String) -> String {
+    return String(
+      format:
+      "%@/modelderivative/v2/designdata/%@/manifest",
+      forgeUrl,
+      fileUrn64);
+  }
+  
+  // Functions calling Forge API's
+  
+  func postBuckets(_ bucketName: String, completion: @escaping (Any?) -> Void) {
+    let body = String(
+      format:
+      "{ \"bucketKey\":\"%@\"" +
+        ",\"policy\":\"transient\"," +
+      "\"servicesAllowed\":{}}",
+      bucketName)
+    
+    httpTo(
+      postBucketsPath(),
+      data: body.data(using: String.Encoding.utf8)!,
+      contentType: "application/json",
+      method: "POST", getJson: true, completion: completion)
+  }
+  
+  func putObject(_ bucketName: String, _ fileName: String, _ fileData: Data, completion: @escaping (Any?) -> Void) {
+    httpTo(
+      putObjectPath(bucketName, fileName),
+      data: fileData,
+      contentType: "application/stream",
+      method: "PUT", getJson: true, completion: completion)
+  }
+  
+  func postTranslate(_ fileUrn64: String, completion: @escaping (Any?) -> Void) {
+    let body = String(
+      format:
+      "{" +
+        "\"input\": {" +
+        "\"urn\": \"%@\"" +
+        "}," +
+        "\"output\": {" +
+        "\"formats\": [{" +
+        "\"type\": \"svf\"," +
+        "\"views\": [" +
+        "\"2d\"," +
+        "\"3d\"" +
+        "]" +
+        "}]" +
+        "}" +
+      "}",
+      fileUrn64)
+    
+    httpTo(
+      postTranslatePath(),
+      data: body.data(using: String.Encoding.utf8)!,
+      contentType:"application/json; charset=utf-8",
+      method:"POST", getJson: true, completion: completion)
+  }
+  
+  func getThumbnail(_ fileUrn64: String, completion: @escaping (Any?) -> Void) {
+    httpTo(
+      getThumbnailPath(fileUrn64),
+      data: nil,
+      contentType:"application/json; charset=utf-8",
+      method:"GET", getJson: false, completion: completion)
+  }
+  
+  func getManifest(_ fileUrn64: String, completion: @escaping (Any?) -> Void) {
+    httpTo(
+      getManifestPath(fileUrn64),
+      data: nil,
+      contentType:"application/json; charset=utf-8",
+      method:"GET", getJson: true, completion: completion)
+  }
+  
+  // Dialog related functions
+  
+  @IBOutlet weak var infoLabel: NSTextField!
+  @IBOutlet weak var progressBar: NSProgressIndicator!
   @IBOutlet weak var window: NSWindow!
-  
   @IBOutlet weak var consumerKey: NSTextField!
   @IBOutlet weak var consumerSecret: NSTextField!
   @IBOutlet weak var bucketName: NSTextField!
@@ -22,123 +140,152 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
   @IBOutlet weak var fileUrn: NSComboBox!
   @IBOutlet weak var fileThumbnail: NSImageView!
   
-  @IBAction func generateToken(sender: AnyObject) {
+  @IBAction func generateToken(_ sender: Any) {
     logIn();
   }
   
-  // Open the webpage of the project: index.html
-  @IBAction func openWebpage(sender: AnyObject) {
-    //This part does not work anymore, as the viewer need to be running
-    //from a web server, i.e, the address should be simliar like
-    // http://server/folder/index.html, instead of file:///folder/index.html
-    
-//    // Get the file path
-//    var mainBundle = NSBundle.mainBundle()
-//    var path = mainBundle.pathForResource("index", ofType:"html")
-//    //var path = mainBundle.pathForResource("ViewSaveAnimate", ofType:"html")
-//    var url = NSURL.fileURLWithPath(path!)
-//    path = url?.absoluteString
-//    
-//    // Add the query string
-//    path! += "?accessToken=" + accessToken.stringValue
-//    path! += "&urn=" + fileUrn.stringValue
-//    
-//    // Create URL for that
-//    url = NSURL(string: path!)!
-//    
-//    // Open it in browser
-//    NSWorkspace.sharedWorkspace().openURL(url!)
+  func setInfoLabelText(_ text: String) {
+    DispatchQueue.main.async(execute: { () -> Void in
+      self.infoLabel.stringValue = text
+    })
   }
   
-  @IBAction func uploadFile(sender: AnyObject) {
+  func setAccessTokenText(_ text: String) {
+    DispatchQueue.main.async(execute: { () -> Void in
+      self.accessToken.stringValue = text
+    })
+  }
+  
+  func setFileThumbnailImage(_ data: Data?) {
+    DispatchQueue.main.async(execute: { () -> Void in
+      if (data != nil) {
+        self.fileThumbnail.image = NSImage(data: data!)
+      }
+    })
+  }
+  
+  func setProgressBarPosition(_ position: Double) {
+    DispatchQueue.main.async(execute: { () -> Void in
+      self.progressBar.doubleValue = position
+    })
+  }
+  
+  func checkProgress(timer: Timer) {
+    let fileUrn64: String = timer.userInfo as! String
+    getManifest(fileUrn64, completion: {
+      data in
+      
+      let json = data as! NSDictionary
+      let status = json["status"] as! String
+      let progress = json["progress"] as! String
+      
+      if status == "failed" {
+        self.setInfoLabelText("Failed")
+        self.setProgressBarPosition(0)
+      } else {
+        self.setInfoLabelText(progress)
+      
+        let parts: [String] = progress.components(separatedBy: "%")
+        if (parts.count > 1) {
+          self.setProgressBarPosition(Double(parts[0])!)
+        } else {
+          self.setProgressBarPosition(100)
+        }
+      }
+      
+      if progress == "complete" || status == "failed" {
+        timer.invalidate()
+      }
+    })
+  }
+  
+  func keepCheckingProgress(_ fileUrn64: String) {
+    DispatchQueue.main.async(execute: { () -> Void in
+      Timer.scheduledTimer(
+        timeInterval: 1, target: self,
+        selector: #selector(self.checkProgress),
+        userInfo: fileUrn64, repeats: true)
+    })
+  }
+  
+  @IBAction func uploadFile(_ sender: Any) {
     // Select a file first
-    var filePath = openFileDialog(
+    let filePath = openFileDialog(
       "File Upload", message: "Select file to upload")
     
     if filePath == "" {
       return
     }
     
-    var fileData = NSData(contentsOfURL: NSURL(string: filePath)!)
-    
-    var fileName = filePath.lastPathComponent
-    
-    // Get rid of spaces in the file name
-    fileName = fileName.stringByReplacingOccurrencesOfString("%20", withString: "", options: NSStringCompareOptions.CaseInsensitiveSearch, range: nil)
-    
-    // Now we can try to create a bucket
-    var body = NSString(format:
-      "{ \"bucketKey\":\"" + bucketName.stringValue  +
-      "\",\"policy\":\"transient\"," +
-      "\"servicesAllowed\":{}}")
-    
-    var json = httpTo(viewerUrl + "/oss/v1/buckets",
-      data: body.dataUsingEncoding(NSUTF8StringEncoding)!,
-      contentType: "application/json",
-      method: "POST",
-      statusCode: nil)
-    
-    // Now we try to upload the file
-    // uploading will take some time, during which app will freeze
-    var url = NSString(format:"%@/%@",
-      viewerUrl + "/oss/v1/buckets/" + bucketName.stringValue + "/objects", fileName);
-    
-    var statusCode: NSInteger? = nil
-    
-    json = httpTo(url, data: fileData!,
-      contentType: "application/stream",
-      method: "PUT", statusCode: statusCode)
-    
-    var objects: AnyObject =
-    json!.objectForKey("objects")!.objectAtIndex(0)
-    
-    var fileKey = objects.objectForKey("key") as! NSString
-    var fileSha1 = objects.objectForKey("sha-1")as! NSString
-    var fileId = objects.objectForKey("id")as! NSString
-    
-    NSLog("fileKey = %@", fileKey);
-    NSLog("fileSha1 = %@", fileSha1);
-    NSLog("fileId = %@", fileId);
-    
-    var data = fileId.dataUsingEncoding(NSUTF8StringEncoding)
-    var fileUrn64 = data!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.EncodingEndLineWithCarriageReturn)
-    NSLog("fileUrn64 = %@", fileUrn64)
-    
-    fileUrn.addItemWithObjectValue(fileUrn64)
-    
-    // Send for translation
-    body = NSString(format: "{\"urn\":\"%@\"}", fileUrn64)
-    
-    json = httpTo(viewerUrl + "/viewingservice/v1/register",
-      data: body.dataUsingEncoding(NSUTF8StringEncoding)!,
-      contentType:"application/json; charset=utf-8",
-      method:"POST",
-      statusCode: statusCode)
-  }
-  
-  func comboBoxSelectionDidChange(notification: NSNotification) {
-    var changedRow = fileUrn.indexOfSelectedItem;
-    var value: AnyObject! = fileUrn.objectValueOfSelectedItem
-    var str = value as! NSString
-    
-    showThumbnail(str)
-  }
-  
-  // Show thumbnail of currently selected file
-    // thumbnail will only show once translation is completed, which will take some time
-  func showThumbnail(urn: NSString) {
-    var url =
-    NSString(format:"%@%@",
-      viewerUrl + "/viewingservice/v1/thumbnails/", urn)
-    var data = NSData(contentsOfURL: NSURL(string: url as String)!)
-    
-    if (data != nil) {
-      fileThumbnail.image = NSImage(data: data!)
+    do {
+      let fileData = try Data(contentsOf: URL(string: filePath)!)
+      let filePathUrl = URL(fileURLWithPath: filePath)
+      var fileName = filePathUrl.lastPathComponent
+      
+      // Get rid of spaces in the file name
+      fileName = fileName.replacingOccurrences(of: "%20", with: "", options: NSString.CompareOptions.caseInsensitive, range: nil)
+      
+      // Now we can try to create a bucket
+      setInfoLabelText("Uploading file...")
+      postBuckets(bucketName.stringValue, completion: {
+        data in
+        
+        // Now we try to upload the file
+        // uploading will take some time, during which app will freeze
+        self.putObject(self.bucketName.stringValue, fileName, fileData, completion: {
+          data in
+          
+          let json = data as! NSDictionary
+          let objects = json["objects"] as! [[String : Any]]
+          let firstObject = objects[0] as [String : Any]
+          
+          let fileKey = firstObject["key"]
+          let fileSha1 = firstObject["sha-1"]
+          let fileId = firstObject["id"] as? String
+          
+          print("fileKey = \(fileKey)");
+          print("fileSha1 = \(fileSha1)");
+          print("fileId = \(fileId)");
+          
+          let data = fileId!.data(using: String.Encoding.utf8)
+          var fileUrn64 = data!.base64EncodedString()
+          fileUrn64 = fileUrn64.replacingOccurrences(of: "=", with: "")
+          print("fileUrn64 = \(fileUrn64)")
+          
+          self.fileUrn.addItem(withObjectValue: fileUrn64)
+          
+          // Send for translation
+          self.setInfoLabelText("Translating file...")
+          self.postTranslate(fileUrn64, completion: {
+            data in
+            
+            let json = data as! NSDictionary
+            let diagnostic: String? = json["diagnostic"] as! String?
+            if diagnostic != nil {
+              self.setInfoLabelText(diagnostic!)
+            } else {
+              // Starting monitoring the translation progress
+              self.keepCheckingProgress(fileUrn64)
+            }
+          });
+        });
+      })
+    } catch let err as NSError {
+      setInfoLabelText(err.localizedDescription)
     }
   }
   
-  func openFileDialog(title: String, message: String) -> String {
-    var myFileDialog: NSOpenPanel = NSOpenPanel()
+  func comboBoxSelectionDidChange(_ notification: Notification) {
+    let str: String = fileUrn.objectValues[fileUrn.indexOfSelectedItem] as! String;
+    getThumbnail(str, completion: {
+      data in
+      
+      self.setFileThumbnailImage(data as! Data?)
+    });
+  }
+  
+  func openFileDialog(_ title: String, message: String) -> String {
+    let myFileDialog: NSOpenPanel = NSOpenPanel()
     
     myFileDialog.prompt = "Open"
     myFileDialog.worksWhenModal = true
@@ -148,27 +295,26 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     myFileDialog.title = title
     myFileDialog.message = message
     myFileDialog.runModal()
-    var chosenfile = myFileDialog.URL
+    let chosenfile = myFileDialog.url
     if (chosenfile != nil) {
-      var theFile = chosenfile?.absoluteString!
+      let theFile = chosenfile?.absoluteString
       return (theFile)!
     } else {
       return ("")
     }
   }
   
-  func applicationDidFinishLaunching(aNotification: NSNotification) {
+  func applicationDidFinishLaunching(_ aNotification: Notification) {
     // Insert code here to initialize your application
+    setInfoLabelText("")
     
     // Load Consumer Key, Consumer Secret, urn
-    var prefs = NSUserDefaults.standardUserDefaults()
-    var cKey: AnyObject? =
-    NSUserDefaults.objectForKey(prefs)("ConsumerKey")
-    var cSecret: AnyObject? =
-    NSUserDefaults.objectForKey(prefs)("ConsumerSecret")
-    var fUrn: AnyObject? = NSUserDefaults.objectForKey(prefs)("urn")
-    var fUrns: AnyObject? = NSUserDefaults.objectForKey(prefs)("urns")
-    var cBucket: AnyObject? = NSUserDefaults.objectForKey(prefs)("BucketName")
+    let prefs = UserDefaults.standard
+    let cKey: Any? = prefs.value(forKey: "ConsumerKey")
+    let cSecret: Any? = prefs.value(forKey: "ConsumerSecret")
+    let fUrn: Any? = prefs.value(forKey: "urn")
+    let fUrns: Any? = prefs.value(forKey: "urns")
+    let cBucket: Any? = prefs.value(forKey: "BucketName")
     if (cKey != nil) {
       consumerKey.stringValue = cKey! as! String
     }
@@ -179,7 +325,7 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
       fileUrn.stringValue = fUrn! as! String
     }
     if (fUrns != nil) {
-      deserializeUrns(fUrns! as! String)
+      deserializeUrns(fUrns! as! String as NSString)
     }
     if (cBucket != nil) {
       bucketName.stringValue = cBucket! as! String
@@ -188,21 +334,21 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
   
   func serializeUrns() -> NSString {
     var urns = ""
-    var values = fileUrn.objectValues
-    for urn in fileUrn.objectValues {
+    let values = fileUrn.objectValues
+    for urn in values {
       urns += urn as! String + ";"
     }
     
     return urns as NSString
   }
   
-  func deserializeUrns(urnsText: NSString) {
-    var urns = urnsText.componentsSeparatedByString(";")
+  func deserializeUrns(_ urnsText: NSString) {
+    var urns = urnsText.components(separatedBy: ";")
     urns.removeLast()
-    fileUrn.addItemsWithObjectValues(urns)
+    fileUrn.addItems(withObjectValues: urns)
   }
   
-  func applicationWillTerminate(aNotification: NSNotification) {
+  func applicationWillTerminate(_ aNotification: Notification) {
     // Insert code here to tear down your application
     
     // Save Consumer Key, Consumer Secret, urn
@@ -210,81 +356,79 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
     // ~/Library/Preferences/com.autodesk.MacViewStarter.plist
     // Might be here too:
     // ~/Library/SyncedPreferences/com.autodesk.MacViewStarter.plist
-    var prefs = NSUserDefaults.standardUserDefaults()
-    prefs.setObject(consumerKey.stringValue, forKey:"ConsumerKey")
-    prefs.setObject(
+    let prefs = UserDefaults.standard
+    prefs.set(consumerKey.stringValue, forKey:"ConsumerKey")
+    prefs.set(
       consumerSecret.stringValue, forKey:"ConsumerSecret")
-    prefs.setObject(fileUrn.stringValue, forKey:"urn")
-    prefs.setObject(serializeUrns(), forKey:"urns")
-    prefs.setObject(bucketName.stringValue, forKey:"BucketName")
+    prefs.set(fileUrn.stringValue, forKey:"urn")
+    prefs.set(serializeUrns(), forKey:"urns")
+    prefs.set(bucketName.stringValue, forKey:"BucketName")
     prefs.synchronize()
   }
   
-  // Send an http request
-  func httpTo(url: NSString, data: NSData, contentType: NSString,
-    method: NSString, var statusCode: NSInteger?) -> NSDictionary? {
-      var req = NSMutableURLRequest(
-        URL: NSURL(string: url as String)!)
-      
-      req.HTTPMethod = method as String
-      req.setValue(contentType as String, forHTTPHeaderField: "Content-Type")
-      req.HTTPBody = data
-      
-      var response:
-        AutoreleasingUnsafeMutablePointer<NSURLResponse?> = nil
-      var error: NSErrorPointer = nil
-      var result = NSURLConnection.sendSynchronousRequest(
-        req, returningResponse: response, error: error)
-      
-      if (statusCode != nil && response != nil) {
-        var httpResponse = response.memory!
-        statusCode! = (httpResponse as! NSHTTPURLResponse).statusCode
-      }
-      
-      if (result != nil && result!.length > 0) {
-        var json = NSJSONSerialization.JSONObjectWithData(
-          result!,
-          options: NSJSONReadingOptions.MutableContainers,
-          error: error) as! NSDictionary
-        
-        return json
-      }
-      
-      return nil;
-  }
-  
-  // Log in to the Autodesk system
+  // Log in to Forge
   func logIn() {
-    var body = NSString(
-      format: "client_id=%@&client_secret=%@&grant_type=client_credentials",
-      consumerKey.stringValue, consumerSecret.stringValue).stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+    let body = String(
+      format:
+      "client_id=%@&client_secret=%@" +
+      "&grant_type=client_credentials&scope=%@",
+      consumerKey.stringValue,
+      consumerSecret.stringValue,
+      "data:read data:write data:create data:search " +
+      "bucket:create bucket:read bucket:update bucket:delete")
+      .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
     
-    var json = httpTo(
-      viewerUrl + "/authentication/v1/authenticate",
-      data: body!.dataUsingEncoding(NSUTF8StringEncoding)!,
+    httpTo(
+      postAuthenticatePath(),
+      data: body!.data(using: String.Encoding.utf8)!,
       contentType: "application/x-www-form-urlencoded",
-        method: "POST",
-      statusCode: nil)
-    
-    accessToken.stringValue = json!.objectForKey("access_token") as! String
-    
-    // Set token to authorize additional calls
-    setToken()
+      method: "POST", getJson: true, completion: {
+        data in
+        
+        let json = data as! NSDictionary
+        self.setAccessTokenText(json["access_token"] as! String)
+      }
+    )
   }
   
-  // Needed to run before accessing any resources
-  func setToken() {
-    var body = NSString(format:
-      "access-token=%@", accessToken.stringValue).stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+  // Send http requests
+  func httpTo(_ url: String, data: Data?, contentType: String,
+              method: String, getJson: Bool,
+              completion: @escaping (Any?) -> Void) {
     
-    var statusCode: NSInteger? = 0
+    let sessionConfig = URLSessionConfiguration.default
+    sessionConfig.httpAdditionalHeaders = [
+      "Authorization":"Bearer " + accessToken.stringValue,
+      "Content-Type":contentType
+    ]
     
-    var json =
-    httpTo(viewerUrl + "/utility/v1/settoken",
-      data: body!.dataUsingEncoding(NSUTF8StringEncoding)!,
-      contentType: "application/x-www-form-urlencoded",
-      method: "POST",
-      statusCode: statusCode)
+    var req = URLRequest(url: URL(string: url as String)!)
+    req.httpMethod = method as String
+    if (data != nil) {
+      req.httpBody = data!
+    }
+    
+    let urlSession = URLSession(configuration: sessionConfig)
+    urlSession.dataTask(with: req, completionHandler: {
+      data, response, error in
+      
+      if error == nil && data != nil {
+        if (!getJson) {
+          completion(data as Any?);
+        } else {
+          do {
+            let json = try JSONSerialization.jsonObject(
+              with: data!,
+              options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary;
+            completion(json);
+          } catch let err as NSError {
+            let responseString = String(data: data!, encoding: .utf8)
+            print(responseString);
+            print(err.localizedDescription);
+          }
+        }
+      }
+    }).resume()
   }
 }
 
