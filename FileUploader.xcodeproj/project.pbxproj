@@ -80,8 +80,7 @@
 				F718566319C9EFA60017BED6 /* MainMenu.xib */,
 				F718565B19C9EFA60017BED6 /* Supporting Files */,
 			);
-			name = FileUploader;
-			path = MacViewStarter;
+			path = FileUploader;
 			sourceTree = "<group>";
 		};
 		F718565B19C9EFA60017BED6 /* Supporting Files */ = {
@@ -99,8 +98,7 @@
 				F718567019C9EFA60017BED6 /* FileUploaderTests.swift */,
 				F718566E19C9EFA60017BED6 /* Supporting Files */,
 			);
-			name = FileUploaderTests;
-			path = MacViewStarterTests;
+			path = FileUploaderTests;
 			sourceTree = "<group>";
 		};
 		F718566E19C9EFA60017BED6 /* Supporting Files */ = {
@@ -339,7 +337,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = MacViewStarter/Info.plist;
+				INFOPLIST_FILE = FileUploader/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.autodesk.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -352,7 +350,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = MacViewStarter/Info.plist;
+				INFOPLIST_FILE = FileUploader/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.autodesk.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -373,7 +371,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = MacViewStarterTests/Info.plist;
+				INFOPLIST_FILE = FileUploaderTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.autodesk.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -391,7 +389,7 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = MacViewStarterTests/Info.plist;
+				INFOPLIST_FILE = FileUploaderTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.autodesk.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
