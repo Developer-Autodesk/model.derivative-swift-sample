@@ -15,6 +15,8 @@ This sample shows how you can use the **Data Management API** to upload files to
 
 ![](img/FileUploader.png)
 
+**Note:** you can only get simple files translated, i.e. files which reference other files (like an Inventor assembly) will have no geometry in their translated version.
+
 ## Dependencies
 
 Needs **XCode 8** and **Swift 3**
