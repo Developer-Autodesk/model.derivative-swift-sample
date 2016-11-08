@@ -11,7 +11,7 @@
 
 ## Description
 
-This sample shows how you can use the **Data Management API** to upload files to your application's own private bucket on **OSS**, get it translated using the **Model Derivative API** and then retrieve the generate thumbnail. The front-end will look like this:
+This sample shows how you can use the **Data Management API** to upload files to your application's own private bucket on **OSS**, get it translated using the **Model Derivative API** and then retrieve the generated thumbnail. The front-end will look like this:
 
 ![](img/FileUploader.png)
 
