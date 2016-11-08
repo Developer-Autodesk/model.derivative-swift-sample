@@ -9,7 +9,7 @@
 import Cocoa
 import XCTest
 
-class MacViewStarterTests: XCTestCase {
+class FileUploaderTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
