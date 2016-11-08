@@ -1,41 +1,39 @@
-#Autodesk View and Data API Workflow Sample for MacOS written in Swift
 
+# Swift sample for Forge API's 
 
-##Description
+![Platforms](https://img.shields.io/badge/platform-osx-lightgray.svg)
+![Swift](http://img.shields.io/:Swift-3-orange.svg)
+![XCode](http://img.shields.io/:XCode-8-blue.svg)
+[![License](http://img.shields.io/:license-mit-blue.svg)](http://opensource.org/licenses/MIT)
+[![OAuth2](https://img.shields.io/badge/OAuth2-v1-green.svg)](http://developer.autodesk.com/)
+[![OSS](https://img.shields.io/badge/OSS-v2-green.svg)](http://developer.autodesk.com/)
+[![Model-Derivative](https://img.shields.io/:Model%20Derivative-v2-green.svg)](http://developer.autodesk.com/)
 
-A MacOS sample written in [Swift](https://developer.apple.com/swift) that illustrates the partial workflow with Autodesk View And Data API to achieve the following steps:
+## Description
 
-* Upload a file to bucket
-* Start translation
-* Get thumbnail
+This sample shows how you can use the **Data Management API** to upload files to your application's own private bucket on **OSS**, get it translated using the **Model Derivative API** and then retrieve the generate thumbnail. The front-end will look like this:
 
-This is what the initial user interface looks like before entering the required data:
+![](img/FileUploader.png)
 
-![Image](img/MacViewStarter.png)
+## Dependencies
 
-##Dependencies
+Needs **XCode 8** and **Swift 3**
 
-This requires a version of Xcode that supports the Swift language. With the release of Xcode 6.1 and iOS 8, Swift 1.1 is final.
-
-
-##Setup/Usage Instructions
-
-* Before running the app, change the 'bucketKey' variable to something unique - it won't function if your bucket name collides with someone else's.
-* Type in the Consumer Key and Consumer Secret in the dialog that you got for your application on [https://developer.autodesk.com](https://developer.autodesk.com).
-* Generate Token - this is required before doing any further operation.
-* Upload a file for translation.
-* When a urn (id of a given uploaded file) is selected in the combo box, then the dialog will try to retrieve and display  its thumbnail.
-* Next, use other web applications samples like [the Basic Node.Js sample](https://github.com/Developer-Autodesk/workflow-node.js-view.and.data.api) to view the models..
-
-Here is a more detailed user experience of
-[setting up and running this app](http://thebuildingcoder.typepad.com/blog/2015/02/view-and-data-api-sample-in-swift-and-mac-os-upgrade.html).
-
+## Setup/Usage Instructions
+ 
+* Apply for your own credentials (API keys) from [developer.autodesk.com](http://developer.autodesk.com)
+* Fill the form's **Consumer Key** & **Consumer Secret** with your Forge app's credentials
+* Click **Generate Token** in order to authenticate with the Forge webservices. This will fill the **Access Token** text field of the form
+* Specify a **Bucket Name** you want to use. Note that it needs to be lower case characters and numbers and needs to be globally unique. One easy way to make sure that it will be unique is to use the lower case version of your **Consumer Key** as the first part of the **Bucket Name** and then add something to that
+* Click **Upload File** to create the new bucket and upload the file to it. This will also start the translation prcess and will write information about how far the translation got
+* The **Urn's** field will keep a list of all the files that got uploaded to your bucket. Once the translation finished for a specific item then the thumbnail for it will become available. Now when you select an item from the **Urn's** list then the file's thumbnail will appear in the bottom part of the form
 
 ## License
 
-This sample is licensed under the terms of the [MIT License](http://opensource.org/licenses/MIT). Please see the [LICENSE](LICENSE) file for full details.
+That samples are licensed under the terms of the [MIT License](http://opensource.org/licenses/MIT). Please see the [LICENSE](LICENSE) file for full details.
 
 
-##Written by
+## Written by 
 
-Written by [Adam Nagy](http://adndevblog.typepad.com/cloud_and_mobile/adam-nagy.html)
+Written by [Adam Nagy](http://adndevblog.typepad.com/cloud_and_mobile/adam-nagy.html), Autodesk Developer Network.
+

@@ -25,14 +25,14 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
   func postBucketsPath() -> String {
     return String(
       format:
-      "%@/oss/v1/buckets",
+      "%@/oss/v2/buckets",
       forgeUrl);
   }
   
   func putObjectPath(_ bucketName: String, _ fileName: String) -> String {
     return String(
       format:
-      "%@/oss/v1/buckets/%@/objects/%@",
+      "%@/oss/v2/buckets/%@/objects/%@",
       forgeUrl,
       bucketName,
       fileName);
@@ -236,12 +236,9 @@ NSObject, NSApplicationDelegate, NSComboBoxDelegate {
           data in
           
           let json = data as! NSDictionary
-          let objects = json["objects"] as! [[String : Any]]
-          let firstObject = objects[0] as [String : Any]
-          
-          let fileKey = firstObject["key"]
-          let fileSha1 = firstObject["sha-1"]
-          let fileId = firstObject["id"] as? String
+          let fileKey = json["objectKey"]
+          let fileSha1 = json["sha1"]
+          let fileId = json["objectId"] as? String
           
           print("fileKey = \(fileKey)");
           print("fileSha1 = \(fileSha1)");
